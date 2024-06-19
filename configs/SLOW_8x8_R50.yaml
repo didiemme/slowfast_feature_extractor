@@ -5,21 +5,16 @@ TRAIN:
   EVAL_PERIOD: 10
   CHECKPOINT_PERIOD: 10
   AUTO_RESUME: True
-  TRAIN_DATA_LIST: "train.csv"
+  CHECKPOINT_FILE_PATH: "checkpoints/SLOW_8x8_R50.pyth"
 DATA:
-  NUM_FRAMES: 32
-  SAMPLING_RATE: 2
+  NUM_FRAMES: 8
+  SAMPLING_RATE: 8
   TRAIN_JITTER_SCALES: [256, 320]
   TRAIN_CROP_SIZE: 224
   TEST_CROP_SIZE: 256
-  INPUT_CHANNEL_NUM: [3, 3]
+  INPUT_CHANNEL_NUM: [3]
   PATH_PREFIX: /datasets01/kinetics/070618/400/
   PATH_TO_DATA_DIR: data/kinetics/288p_valid/
-SLOWFAST:
-  ALPHA: 4
-  BETA_INV: 8
-  FUSION_CONV_CHANNEL_RATIO: 2
-  FUSION_KERNEL_SZ: 7
 RESNET:
   ZERO_INIT_FINAL_BN: True
   WIDTH_PER_GROUP: 64
@@ -27,12 +22,10 @@ RESNET:
   DEPTH: 50
   TRANS_FUNC: bottleneck_transform
   STRIDE_1X1: False
-  NUM_BLOCK_TEMP_KERNEL: [[3, 3], [4, 4], [6, 6], [3, 3]]
-  SPATIAL_STRIDES: [[1, 1], [2, 2], [2, 2], [2, 2]]
-  SPATIAL_DILATIONS: [[1, 1], [1, 1], [1, 1], [1, 1]]
+  NUM_BLOCK_TEMP_KERNEL: [[3], [4], [6], [3]]
 NONLOCAL:
-  LOCATION: [[[], []], [[], []], [[], []], [[], []]]
-  GROUP: [[1, 1], [1, 1], [1, 1], [1, 1]]
+  LOCATION: [[[]], [[]], [[]], [[]]]
+  GROUP: [[1], [1], [1], [1]]
   INSTANTIATION: dot_product
 BN:
   USE_PRECISE_STATS: True
@@ -48,8 +41,8 @@ SOLVER:
   OPTIMIZING_METHOD: sgd
 MODEL:
   NUM_CLASSES: 400
-  ARCH: slowfast
-  MODEL_NAME: SlowFast
+  ARCH: slow
+  MODEL_NAME: ResNet
   LOSS_FUNC: cross_entropy
   DROPOUT_RATE: 0.5
 TEST:
@@ -59,7 +52,7 @@ TEST:
 DATA_LOADER:
   NUM_WORKERS: 4
   PIN_MEMORY: True
-NUM_GPUS: 8
+NUM_GPUS: 4
 NUM_SHARDS: 1
 RNG_SEED: 0
 OUTPUT_DIR: .

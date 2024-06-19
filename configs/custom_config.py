@@ -34,7 +34,7 @@ def get_cfg():
     """
     Get a copy of the default config.
     """
-    return defcfg._assert_and_infer_cfg(defcfg._C.clone())
+    return defcfg.assert_and_infer_cfg(defcfg._C.clone())
 
 
 def load_config(args):
@@ -47,8 +47,8 @@ def load_config(args):
     # Setup cfg.
     cfg = get_cfg()
     # Load config from cfg.
-    if args.cfg_file is not None:
-        cfg.merge_from_file(args.cfg_file)
+    if args.cfg_files is not None:
+        cfg.merge_from_file(args.cfg_files[0])
     # Load config from command line, overwrite config from opts.
     if args.opts is not None:
         cfg.merge_from_list(args.opts)
